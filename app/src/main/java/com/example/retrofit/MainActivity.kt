@@ -20,16 +20,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val updateTimeText: TextView = findViewById(R.id.update_time)
-        val statusText: TextView = findViewById(R.id.status)
-        var data =""
+        val updateTimeTextView: TextView = findViewById(R.id.update_time)
+        val statusTextView: TextView = findViewById(R.id.status)
 
         val moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://sheetdb.io/api/v1/rp1serrhhbdb3/")
+            .baseUrl("https://sheetdb.io/")
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
 
@@ -40,10 +39,18 @@ class MainActivity : AppCompatActivity() {
                 val dateApiResponse = service.getDate().execute().body()
                     ?: throw IllegalStateException("bodyがnullだよ")
 
+                val getUpdateTimeText = getString(R.string.update_time_text)
+                val getStatusText = getString(R.string.update_time_text)
+
+                val dateApiResponseUpdateTime = dateApiResponse[0].update_time
+                val dateApiResponseStatus = dateApiResponse[0].status
+
+                val updateTimeText = getUpdateTimeText + dateApiResponseUpdateTime
+                val statusText = getStatusText + dateApiResponseStatus
+
                 Handler(Looper.getMainLooper()).post {
-                    Log.d("response", dateApiResponse[0].update_time.toString())
-                    updateTimeText.text = dateApiResponse[0].update_time.toString()
-                    statusText.text = dateApiResponse[0].status.toString()
+                    updateTimeTextView.text = updateTimeText
+                    statusTextView.text = statusText
                 }
             } catch (e: Exception) {
                 Log.e("Error", "${e}")

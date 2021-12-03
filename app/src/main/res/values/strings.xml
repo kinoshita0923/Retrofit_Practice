@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Retrofit</string>
+    <string name="update_time_text">update time:</string>
+    <string name="status_text">status:</string>
 </resources>
