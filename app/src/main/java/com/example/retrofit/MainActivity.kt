@@ -39,14 +39,8 @@ class MainActivity : AppCompatActivity() {
                 val dateApiResponse = service.getDate().execute().body()
                     ?: throw IllegalStateException("bodyがnullだよ")
 
-                val getUpdateTimeText = getString(R.string.update_time_text)
-                val getStatusText = getString(R.string.update_time_text)
-
-                val dateApiResponseUpdateTime = dateApiResponse[0].update_time
-                val dateApiResponseStatus = dateApiResponse[0].status
-
-                val updateTimeText = getUpdateTimeText + dateApiResponseUpdateTime
-                val statusText = getStatusText + dateApiResponseStatus
+                val updateTimeText = getString(R.string.update_time_text) + dateApiResponse[0].update_time
+                val statusText = getString(R.string.update_time_text) + dateApiResponse[0].status
 
                 Handler(Looper.getMainLooper()).post {
                     updateTimeTextView.text = updateTimeText
